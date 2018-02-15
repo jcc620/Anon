@@ -1,0 +1,19 @@
+#Script to anonymize a system through TOR and a MAC change
+#Written By Jamie Cronin
+
+networkCard=enp2s0
+if  [ ! $1 ]; then
+	echo You did not choose an option
+elif  [ $1 = "start" ]; then
+	ifconfig $networkCard down
+	macchanger -r $networkCard
+	ifconfig $networkCard up
+	python /usr/bin/toriptables2.py -l
+elif  [ $1 = "stop" ]; then
+	ifconfig $networkCard down
+	macchanger -p $networkCard
+	ifconfig $networkCard up
+	python /usr/bin/toriptables2.py -f
+else
+	echo You did not choose a valid option.
+fi
